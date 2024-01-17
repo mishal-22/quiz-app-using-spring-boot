@@ -3,6 +3,7 @@ package com.mishal.QuizApp.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.mishal.QuizApp.Dao.QuestionDao;
 import com.mishal.QuizApp.Dao.QuizDao;
+import com.mishal.QuizApp.Dao.QuizInfoRepository;
 import com.mishal.QuizApp.model.Question;
 import com.mishal.QuizApp.model.QuestionWrapper;
 import com.mishal.QuizApp.model.Quiz;
+import com.mishal.QuizApp.model.QuizInfo;
 import com.mishal.QuizApp.model.Response;
 
 @Service
@@ -24,6 +27,8 @@ public class QuizService {
 	QuizDao quizDao;
 	@Autowired
 	QuestionDao questionDao;
+	@Autowired
+	QuizInfoRepository quizInfoRepository;
 
 	public ResponseEntity<String> createQuiz(String category, int numQ, String title) {
 
@@ -33,12 +38,19 @@ public class QuizService {
 		quiz.setTitle(title);
 		quiz.setQuestions(questions);
 		quizDao.save(quiz);
+		QuizInfo quizInfo=new QuizInfo();
+		quizInfo.setCategory(category);
+		quizInfo.setTitle(title);
+		quizInfo.setNumQ(numQ);
+		quizInfoRepository.save(quizInfo);
 
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 
 	public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Integer id) {
 		Optional<Quiz> quiz = quizDao.findById(id);
+		if(quiz.isPresent()) {
+			
 		List<Question> questionsfromDB=quiz.get().getQuestions();
 		List<QuestionWrapper> questionForUser=new ArrayList<QuestionWrapper>();
 		for(Question q:questionsfromDB) {
@@ -46,6 +58,9 @@ public class QuizService {
 		     questionForUser.add(questionWrapper);
 		}
 		return new ResponseEntity<List<QuestionWrapper>>(questionForUser,HttpStatus.OK);
+		}else {
+			throw new NoSuchElementException("Quiz not found for id: " + id); 
+		}
 	}
 
 	public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
@@ -66,4 +81,18 @@ public class QuizService {
 		return new ResponseEntity<Integer>(right,HttpStatus.OK);
 				
 	}
+
+	public ResponseEntity<List<QuizInfo>> fetchQuiz() {
+		List<QuizInfo> quizInfo=quizInfoRepository.findAll();
+		return new ResponseEntity<List<QuizInfo>>(quizInfo,HttpStatus.OK);
+	}
+
+	public ResponseEntity<String> deleteQuiz(Integer id) {
+		quizInfoRepository.deleteById(id);
+		return new ResponseEntity<String>("Deleted",HttpStatus.OK);
+	}
+
+	
+
+	
 }
