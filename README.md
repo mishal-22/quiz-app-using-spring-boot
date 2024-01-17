@@ -1,3 +1,25 @@
+
+![question](https://github.com/mishal-22/quiz-app-using-spring-boot/assets/107937088/c51c765a-b351-4301-8270-25108708f980)
+
+
+
+![question based on category](https://github.com/mishal-22/quiz-app-using-spring-boot/assets/107937088/915b37e6-0e5a-4c65-b5a0-004ccccd0000)
+
+
+
+![Add Question](https://github.com/mishal-22/quiz-app-using-spring-boot/assets/107937088/34b785df-a782-4364-b38c-598e60f0b84c)
+
+
+
+
+![quiz](https://github.com/mishal-22/quiz-app-using-spring-boot/assets/107937088/d42f75e4-bada-4fa3-b661-ac1c3d43c95d)
+
+
+![quiz by title](https://github.com/mishal-22/quiz-app-using-spring-boot/assets/107937088/a812fc99-cd88-4540-ad7a-f26cb102aaac)
+
+
+
+
 ![AllQuestions](https://github.com/mishal-22/quiz-app-using-spring-boot/assets/107937088/eea39487-f30b-441b-8d97-9333e5d5ca1e)
 # Using Postman fetch the all the questions from database (http://localhost:8080/question/allQuestions)
 
